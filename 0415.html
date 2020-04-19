@@ -29,6 +29,10 @@
         rel="stylesheet">
     <script>
         function openclose() {
+            if ($('#category-box2').css('display') == 'block') {
+                $('#category-box2').hide();
+                $('#search-box').text('Search!')
+            }
             if ($('#category-box').css('display') == 'block') {
                 $('#category-box').hide();
                 $('#share-box').text('Share!')
@@ -36,17 +40,19 @@
                 $('#category-box').show();
                 $('#share-box').text('feel so good:D')
             }
-            YetAnotherFunction();
         }
         function openclose2() {
-            if ($('#category2-box').css('display') == 'block') {
-                $('#category2-box').hide();
+            if ($('#category-box').css('display') == 'block') {
+                $('#category-box').hide();
+                $('#share-box').text('Share!')
+            }
+            if ($('#category-box2').css('display') == 'block') {
+                $('#category-box2').hide();
                 $('#search-box').text('Search!')
             } else {
-                $('#category2-box').show();
+                $('#category-box2').show();
                 $('#search-box').text('feel so happy:D')
             }
-            YetAnotherFunction();
         }
     </script>
     <style type="text/css">
@@ -186,6 +192,8 @@
         .select-options {
             display: inline-block;
             vertical-align: middle;
+
+
         }
 
         .country {
@@ -286,7 +294,7 @@
             display: none;
         }
 
-        #category2-box {
+        #category-box2 {
             display: none;
         }
     </style>
@@ -352,45 +360,50 @@
                     <button onclick="posting()" class="search2" data-hover=":D">:)</button>
             </p>
         </div>
+    </div>
 
 
 
-        <div>
-            <div class="category" id="category-box2">
-                <div class="select-options">
-                    <select id="count2" class="country">
-                        <option selected value>Country</option>
-                        <option value="1">Republic of Korea</option>
-                        <option value="2">Belgium</option>
-                        <option value="3">China</option>
-                        <option value="4">France</option>
-                        <option value="5">Germany</option>
-                        <option value="6">Iceland</option>
-                        <option value="7">India</option>
-                        <option value="8">Ireland</option>
-                        <option value="9">Netherlands</option>
-                        <option value="10">Portugal</option>
-                        <option value="11">Spain</option>
-                        <option value="12">United Kingdom</option>
-                        <option value="13">United States</option>
-                    </select>
-                    <select id="count2" class="country">
-                        <option selected value>category</option>
-                        <option value="1">Restaurants</option>
-                        <option value="2">Coffee</option>
-                        <option value="3">Hotels</option>
-                        <option value="4">Bars</option>
-                        <option value="5">Attractions</option>
-                        <option value="6">Parks</option>
-                        <option value="7">Libraries</option>
-                        <option value="8">Museum</option>
-                        <option value="9">Clothing stores</option>
-                        <option value="10">Lifestyle</option>
-                    </select>
-                    <button onclick="posting()" class="search2" data-hover=":D">:)</button>
-                </div>
+    <div>
+        <div class="category" id="category-box2">
+            <br>
+            <br>
+            <br>
+            <br>
+            <div class="select-options">
+                <select id="count2" class="country">
+                    <option selected value>Country</option>
+                    <option value="1">Republic of Korea</option>
+                    <option value="2">Belgium</option>
+                    <option value="3">China</option>
+                    <option value="4">France</option>
+                    <option value="5">Germany</option>
+                    <option value="6">Iceland</option>
+                    <option value="7">India</option>
+                    <option value="8">Ireland</option>
+                    <option value="9">Netherlands</option>
+                    <option value="10">Portugal</option>
+                    <option value="11">Spain</option>
+                    <option value="12">United Kingdom</option>
+                    <option value="13">United States</option>
+                </select>
+                <select id="count2" class="country">
+                    <option selected value>category</option>
+                    <option value="1">Restaurants</option>
+                    <option value="2">Coffee</option>
+                    <option value="3">Hotels</option>
+                    <option value="4">Bars</option>
+                    <option value="5">Attractions</option>
+                    <option value="6">Parks</option>
+                    <option value="7">Libraries</option>
+                    <option value="8">Museum</option>
+                    <option value="9">Clothing stores</option>
+                    <option value="10">Lifestyle</option>
+                </select>
+                <button onclick="posting()" class="search2" data-hover=":D">:)</button>
             </div>
         </div>
+    </div>
 
     </div>
 </body>
