@@ -54,6 +54,62 @@
                 $('#search-box').text('feel so happy:D')
             }
         }
+        // function posting() {
+        //     let url = $('#posting-url').val();
+        //     let nickname = $('#nicknames').val();
+        //     let comment = $('#comments').val();
+        //     let author = '스파르타코딩클럽';
+
+
+        //     $.ajax({
+        //         type: "POST", // POST 방식으로 요청하겠다.
+        //         url: "http://annasim.shop/post", // /post라는 url에 요청하겠다.
+        //         data: { url_give: url, comment_give: comment, author_give: author }, // 데이터를 주는 방법
+        //         success: function (response) { // 성공하면
+        //             if (response['result'] == 'success') {
+        //                 alert('포스팅 성공!');
+        //                 window.location.reload();
+        //             } else {
+        //                 alert('서버 오류!')
+        //             }
+        //         }
+        //     })
+        // }
+        // $(document).ready(function () {
+        //     $('#cards-box').html('');
+        //     listing();
+        // });
+
+        // function listing() {
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "http://spartacodingclub.shop/post?author_give=스파르타코딩클럽",
+        //         data: {},
+        //         success: function (response) {
+        //             if (response['result'] == 'success') {
+        //                 let articles = response['articles'];
+        //                 for (let i = 0; i < articles.length; i++) {
+        //                     make_card(articles[i]['comment'], articles[i]['desc'], articles[i]['image'], articles[i]['title'], articles[i]['url'])
+        //                 }
+        //             } else {
+        //                 alert('기사를 받아오지 못했습니다');
+        //             }
+        //         }
+        //     })
+        // }
+
+        function make_card(comment, nickname, desc, image, title, url) {
+            let temp_html = '<div class="card">\
+        <img class="card-img-top" src="'+ image + '" alt="Card image cap">\
+        <div class="card-body">\
+          <a href="'+ url + '" class="card-title">' + title + '</a>\
+          <p class="card-text">'+ desc + '</p>\
+          <p class="card-text ninkname">'+ nickname + '</p>\
+          <p class="card-text comment">'+ comment + '</p>\
+        </div>\
+      </div>';
+            $('#cards-box').append(temp_html);
+        }
     </script>
     <style type="text/css">
         * {
@@ -65,7 +121,7 @@
         }
 
         .wrap {
-            width: 1000px;
+            width: 800px;
             margin: 50px auto 0 auto;
             display: flex;
             flex-direction: column;
@@ -75,6 +131,7 @@
 
         .head {
             color: #353535;
+            margin: 10px auto 0 auto;
             font-size: 70px;
             font-weight: 900;
         }
@@ -110,12 +167,12 @@
         }
 
         .share {
-            border: 1px solid #e7e7e7;
+            border: 1px solid #dbdbdb;
             width: 100px;
             height: 23px;
             border-radius: 1cm;
             padding: 0.03cm;
-            background-color: #e7e7e7;
+            background-color: #dbdbdb;
             color: #353535;
             flex-direction: column;
             display: inline-block;
@@ -133,12 +190,12 @@
         }
 
         .search {
-            border: 1px solid #e7e7e7;
+            border: 1px solid #dbdbdb;
             width: 100px;
             height: 23px;
             border-radius: 1cm;
             padding: 0.03cm;
-            background-color: #e7e7e7;
+            background-color: #dbdbdb;
             color: #353535;
             flex-direction: column;
             display: inline-block;
@@ -317,53 +374,52 @@
                     style="text-align:center">Search!</a>
             </div>
         </div>
-        <div class="category" id="category-box">
-            <a target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps" class="website"
-                data-hover="Google!">Click
-                me!</a>
-            <input type="text" size="50" class="url" placeholder="Paste your url">
-            <p>
-                <div class="select-options">
-                    <select id="count" class="country">
-                        <option selected value>Country</option>
-                        <option value="1">Republic of Korea</option>
-                        <option value="2">Belgium</option>
-                        <option value="3">China</option>
-                        <option value="4">France</option>
-                        <option value="5">Germany</option>
-                        <option value="6">Iceland</option>
-                        <option value="7">India</option>
-                        <option value="8">Ireland</option>
-                        <option value="9">Netherlands</option>
-                        <option value="10">Portugal</option>
-                        <option value="11">Spain</option>
-                        <option value="12">United Kingdom</option>
-                        <option value="13">United States</option>
-                    </select>
-                    <select id="count" class="country">
-                        <option selected value>category</option>
-                        <option value="1">Restaurants</option>
-                        <option value="2">Coffee</option>
-                        <option value="3">Hotels</option>
-                        <option value="4">Bars</option>
-                        <option value="5">Attractions</option>
-                        <option value="6">Parks</option>
-                        <option value="7">Libraries</option>
-                        <option value="8">Museum</option>
-                        <option value="9">Clothing stores</option>
-                        <option value="10">Lifestyle</option>
-                    </select>
-                    <div class="form-group">
-                        <input type="text" class="nickname" size="50" placeholder="Nickname">
-                        <input type="text" class="comment" size="30" placeholder="Comment">
-                    </div>
-                    <button onclick="posting()" class="search2" data-hover=":D">:)</button>
-            </p>
+        <div class="form-post">
+            <div class="category" id="category-box">
+                <a target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps" class="website"
+                    data-hover="Google!">Click
+                    me!</a>
+                <input type="text" size="50" id="posting-url" class="url" placeholder="Paste your url">
+                <p>
+                    <div class="select-options">
+                        <select id="count" class="country">
+                            <option selected value>Country</option>
+                            <option value="1">Republic of Korea</option>
+                            <option value="2">Belgium</option>
+                            <option value="3">China</option>
+                            <option value="4">France</option>
+                            <option value="5">Germany</option>
+                            <option value="6">Iceland</option>
+                            <option value="7">India</option>
+                            <option value="8">Ireland</option>
+                            <option value="9">Netherlands</option>
+                            <option value="10">Portugal</option>
+                            <option value="11">Spain</option>
+                            <option value="12">United Kingdom</option>
+                            <option value="13">United States</option>
+                        </select>
+                        <select id="count" class="country">
+                            <option selected value>category</option>
+                            <option value="1">Restaurants</option>
+                            <option value="2">Coffee</option>
+                            <option value="3">Hotels</option>
+                            <option value="4">Bars</option>
+                            <option value="5">Attractions</option>
+                            <option value="6">Parks</option>
+                            <option value="7">Libraries</option>
+                            <option value="8">Museum</option>
+                            <option value="9">Clothing stores</option>
+                            <option value="10">Lifestyle</option>
+                        </select>
+                        <div class="form-group">
+                            <input type="text" id="nicknames" class="nickname" size="50" placeholder="Nickname">
+                            <input type="text" id="comments" class="comment" size="30" placeholder="Comment">
+                        </div>
+                        <button onclick="posting()" class="search2" data-hover=":D">:)</button>
+                </p>
+            </div>
         </div>
     </div>
-
-
-
     <div>
         <div class="category" id="category-box2">
             <br>
@@ -404,8 +460,20 @@
             </div>
         </div>
     </div>
-
+    <div class="card-columns" id="cards-box">
+        <div class="card">
+            <img class="card-img-top"
+                src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
+                alt="Card image cap">
+            <div class="card-body">
+                <a href="#" class="card-title">title</a>
+                <p class="card-text">address</p>
+                <p class="card-text ninkname">Nickname</p>
+                <p class="card-text comment">Comment</p>
+            </div>
+        </div>
     </div>
+
 </body>
 
 </html>
