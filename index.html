@@ -135,23 +135,40 @@
         function make_card(url, comment, title, image, nickname, desc, category1, category2) {
             let temp_html = '<div class="card">\
             <img class="card-img-top" src="'+ image + '" alt="Card image cap">\
-            <div class="card-body">\
+            <div class="card-img-overlay" id="card-overlay">\
+                <p class="card-text-category1">'+ category1 + ' · ' + category2 + '</p>\
               <a class="card-title" href="'+ url + '" target="_blank">' + title + '</a>\
               <p class="card-text">'+ desc + '</p>\
-              <p class="card-text category1">'+ category1 + '</p>\
-              <p class="card-text category2">'+ category2 + '</p>\
-              <p class="card-text nickname">'+ nickname + '</p>\
-              <p class="card-text comment">'+ comment + '</p>\
+              <p class="card-text-nickname">'+ 'by ' + nickname + '</p>\
+              <p class="card-text-comment">'+ comment + '</p>\
             </div>\
           </div>';
             $('#cards-box').append(temp_html);
         }
-
+        // function searching() {
+        //     $('#cards-box').html('');
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "http://127.0.0.1:5000/",
+        //         data: {},
+        //         success: function (response) {
+        //             let cards = response["articles"];
+        //             console.log(cards);
+        //             for (let i = 0; i < cards.length; i++) {
+        //                 let category1 = cards[i]['category1'];
+        //                 let category2 = cards[i]['category2'];
+        //                 // let temp_html = '';
+        //                 $('#cards-box').append(temp_html);
+        //             }
+        //         }
+        //     })
+        // }
 
     </script>
     <style type="text/css">
         * {
             font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
         }
 
         body {
@@ -159,7 +176,7 @@
         }
 
         .wrap {
-            width: 800px;
+            width: 1200px;
             margin: 50px auto 0 auto;
             display: flex;
             flex-direction: column;
@@ -249,6 +266,49 @@
             color: #e7e7e7;
             background-color: #224a66;
             text-decoration: none;
+        }
+
+        .card-title {
+            color: #353535;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        a.card-title:hover {
+            border: 1px solid #e7e7e7;
+            color: #353535;
+            background-color: #e7e7e7;
+            text-decoration: none;
+        }
+
+
+
+        .card-text {
+            color: #353535;
+            font-size: 10px;
+            font-weight: 200;
+            margin: -2px auto 5px auto;
+        }
+
+        .card-text-category1 {
+            color: #353535;
+            font-size: 12px;
+            font-weight: 200;
+            margin: -2px auto 2px auto;
+        }
+
+        .card-text-nickname {
+            color: #8b8b8b;
+            font-size: 10px;
+            font-weight: 200;
+            margin: -1px auto -2px auto;
+        }
+
+        .card-text-comment {
+            color: #353535;
+            font-size: 11px;
+            font-weight: 200;
+            margin: 3px auto -2px auto;
         }
 
         .linkurl {
@@ -386,39 +446,51 @@
         }
 
         .card-columns {
-            display: inline-block;
-            vertical-align: middle;
-            margin: 40px auto auto auto;
+            margin: 40px;
+            flex-direction: column;
+            display: inline-block
         }
 
-        .column-6-left {
-            width: 94px;
-            background-color: #d7ede9;
-            padding: 20px;
-            border: 5px solid #5e9d92;
-            float: left;
-            margin-right: 10px;
+
+        .category2 {
+            margin: 10pt auto;
         }
 
-        .column-6-middle {
-            width: 93px;
-            background-color: #d7ede9;
-            padding: 20px;
-            border: 5px solid #5e9d92;
-            float: left;
-            margin-left: 10px;
-            margin-right: 10px;
+        .card {
+            /* float: left;
+            width: 16%; */
+            position: relative;
+            display: block;
+            transition: .3s ease;
+            backface-visibility: hidden;
+            background: transparent;
+            border-color: transparent;
+            border-radius: 0.5cm;
         }
 
-        .column-6-right {
-            width: 94px;
-            background-color: #d7ede9;
-            padding: 20px;
-            border: 5px solid #5e9d92;
-            float: right;
-            margin-left: 10px;
+        .card-img-overlay {
+            border-radius: 0.5cm;
         }
 
+        .card-img-top {
+            border-radius: 0.5cm;
+        }
+
+        .card:hover .card-img-top {
+            border-radius: 0.5cm;
+            transition: .3s ease;
+            backface-visibility: hidden;
+            color: #000000;
+            opacity: 0.1;
+        }
+
+        .card-img-overlay {
+            display: none;
+        }
+
+        .card:hover .card-img-overlay {
+            display: block;
+        }
 
         #category-box {
             display: none;
@@ -456,33 +528,33 @@
                 <p>
                     <div class="select-options">
                         <select id="count1" class="country">
-                            <option selected value>Country</option>
-                            <option value="Republic of Korea">Republic of Korea</option>
-                            <option value="Belgium">Belgium</option>
-                            <option value="China">China</option>
-                            <option value="France">France</option>
-                            <option value="Germany">Germany</option>
-                            <option value="Iceland">Iceland</option>
-                            <option value="India">India</option>
-                            <option value="Ireland">Ireland</option>
-                            <option value="Netherlands">Netherlands</option>
-                            <option value="Portugal">Portugal</option>
-                            <option value="Spain">Spain</option>
-                            <option value="United Kingdom">United Kingdom</option>
-                            <option value="United States">United States</option>
+                            <option selected class>Country</option>
+                            <option class="Republic of Korea">Republic of Korea</option>
+                            <option class="Belgium">Belgium</option>
+                            <option class="China">China</option>
+                            <option class="France">France</option>
+                            <option class="Germany">Germany</option>
+                            <option class="Iceland">Iceland</option>
+                            <option class="India">India</option>
+                            <option class="Ireland">Ireland</option>
+                            <option class="Netherlands">Netherlands</option>
+                            <option class="Portugal">Portugal</option>
+                            <option class="Spain">Spain</option>
+                            <option class="United Kingdom">United Kingdom</option>
+                            <option class="United States">United States</option>
                         </select>
                         <select id="count2" class="country">
-                            <option selected value>category</option>
-                            <option value="Restaurants">Restaurants</option>
-                            <option value="Coffee">Coffee</option>
-                            <option value="Hotels">Hotels</option>
-                            <option value="Bars">Bars</option>
-                            <option value="Attractions">Attractions</option>
-                            <option value="Parks">Parks</option>
-                            <option value="Libraries">Libraries</option>
-                            <option value="Museum">Museum</option>
-                            <option value="Clothing stores">Clothing stores</option>
-                            <option value="Lifestyle stores">Lifestyle stores</option>
+                            <option selected class>category</option>
+                            <option class="Restaurants">Restaurants</option>
+                            <option class="Coffee">Coffee</option>
+                            <option class="Hotels">Hotels</option>
+                            <option class="Bars">Bars</option>
+                            <option class="Attractions">Attractions</option>
+                            <option class="Parks">Parks</option>
+                            <option class="Libraries">Libraries</option>
+                            <option class="Museum">Museum</option>
+                            <option class="Clothing stores">Clothing stores</option>
+                            <option class="Lifestyle stores">Lifestyle stores</option>
                         </select>
                         <div class="form-group">
                             <input type="text" id="nicknames" class="nickname" size="50" placeholder="@Nickname">
@@ -495,143 +567,72 @@
         </div>
     </div>
     <div>
-        <div class="category" id="category-box2">
-            <br>
-            <br>
-            <br>
-            <br>
+        <div class=category2 id="category-box2">
             <div class="select-options">
                 <select id="count2" class="country">
-                    <option selected value>Country</option>
-                    <option value="Republic of Korea">Republic of Korea</option>
-                    <option value="Belgium">Belgium</option>
-                    <option value="China">China</option>
-                    <option value="France">France</option>
-                    <option value="Germany">Germany</option>
-                    <option value="Iceland">Iceland</option>
-                    <option value="India">India</option>
-                    <option value="Ireland">Ireland</option>
-                    <option value="Netherlands">Netherlands</option>
-                    <option value="Portugal">Portugal</option>
-                    <option value="Spain">Spain</option>
-                    <option value="United Kingdom">United Kingdom</option>
-                    <option value="United States">United States</option>
+                    <option selected class>Country</option>
+                    <option class="Republic of Korea">Republic of Korea</option>
+                    <option class="Belgium">Belgium</option>
+                    <option class="China">China</option>
+                    <option class="France">France</option>
+                    <option class="Germany">Germany</option>
+                    <option class="Iceland">Iceland</option>
+                    <option class="India">India</option>
+                    <option class="Ireland">Ireland</option>
+                    <option class="Netherlands">Netherlands</option>
+                    <option class="Portugal">Portugal</option>
+                    <option class="Spain">Spain</option>
+                    <option class="United Kingdom">United Kingdom</option>
+                    <option class="United States">United States</option>
                 </select>
                 <select id="count2" class="country">
-                    <option selected value>category</option>
-                    <option value="Restaurants">Restaurants</option>
-                    <option value="Coffee">Coffee</option>
-                    <option value="Hotels">Hotels</option>
-                    <option value="Bars">Bars</option>
-                    <option value="Attractions">Attractions</option>
-                    <option value="Parks">Parks</option>
-                    <option value="Libraries">Libraries</option>
-                    <option value="Museum">Museum</option>
-                    <option value="Clothing stores">Clothing stores</option>
-                    <option value="Lifestyle stores">Lifestyle stores</option>
+                    <option selected class>category</option>
+                    <option class="Restaurants">Restaurants</option>
+                    <option class="Coffee">Coffee</option>
+                    <option class="Hotels">Hotels</option>
+                    <option class="Bars">Bars</option>
+                    <option class="Attractions">Attractions</option>
+                    <option class="Parks">Parks</option>
+                    <option class="Libraries">Libraries</option>
+                    <option class="Museum">Museum</option>
+                    <option class="Clothing stores">Clothing stores</option>
+                    <option class="Lifestyle stores">Lifestyle stores</option>
                 </select>
-                <button onclick="posting()" class="search2" data-hover=":D">:)</button>
+                <button onclick="searching()" class="search2" data-hover=":D">:)</button>
             </div>
         </div>
     </div>
     <div class="card-columns" id="cards-box">
-        <div class="column-6-left">
-            <img class="card-img-top"
+        <div class="column">
+            <!-- <div class="column-6-left">
+            <img class="card-img"
                 src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
                 alt="Card image cap">
-            <div class="card-body">
-                <a href="#" class="card-title">title</a>
+            <div class="cardin"> -->
+            <!-- <a href="#" class="card-title">title</a>
                 <p class="card-text">address</p>
                 <p class="card-text category1">country</p>
                 <p class="card-text category2">category</p>
                 <p class="card-text ninkname">Nickname</p>
-                <p class="card-text comment">Comment</p>
-            </div>
+                <p class="card-text comment">Comment</p> -->
         </div>
+    </div>
+    </div>
 
-        <div class="column-6-middle">
-            <img class="card-img-top"
+    <!-- <div class="column-6-left">
+            <img class="card-img"
                 src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
-                alt="Card image cap">
-            <div class="card-body">
+                alt="Card image cap"> -->
+    <!-- <div class="cardin">
                 <a href="#" class="card-title">title</a>
                 <p class="card-text">address</p>
                 <p class="card-text category1">country</p>
                 <p class="card-text category2">category</p>
                 <p class="card-text ninkname">Nickname</p>
                 <p class="card-text comment">Comment</p>
-            </div>
-        </div>
+            </div> -->
+    </div>
 
-        <div class="column-6-middle">
-            <img class="card-img-top"
-                src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
-                alt="Card image cap">
-            <div class="card-body">
-                <a href="#" class="card-title">title</a>
-                <p class="card-text">address</p>
-                <p class="card-text category1">country</p>
-                <p class="card-text category2">category</p>
-                <p class="card-text ninkname">Nickname</p>
-                <p class="card-text comment">Comment</p>
-            </div>
-        </div>
-
-        <div class="column-6-middle">
-            <img class="card-img-top"
-                src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
-                alt="Card image cap">
-            <div class="card-body">
-                <a href="#" class="card-title">title</a>
-                <p class="card-text">address</p>
-                <p class="card-text category1">country</p>
-                <p class="card-text category2">category</p>
-                <p class="card-text ninkname">Nickname</p>
-                <p class="card-text comment">Comment</p>
-            </div>
-        </div>
-
-        <div class="column-6-middle">
-            <img class="card-img-top"
-                src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
-                alt="Card image cap">
-            <div class="card-body">
-                <a href="#" class="card-title">title</a>
-                <p class="card-text">address</p>
-                <p class="card-text category1">country</p>
-                <p class="card-text category2">category</p>
-                <p class="card-text ninkname">Nickname</p>
-                <p class="card-text comment">Comment</p>
-            </div>
-        </div>
-
-        <div class="column-6-middle">
-            <img class="card-img-top"
-                src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
-                alt="Card image cap">
-            <div class="card-body">
-                <a href="#" class="card-title">title</a>
-                <p class="card-text">address</p>
-                <p class="card-text category1">country</p>
-                <p class="card-text category2">category</p>
-                <p class="card-text ninkname">Nickname</p>
-                <p class="card-text comment">Comment</p>
-            </div>
-        </div>
-
-        <div class="column-6-right">
-            <img class="card-img-top"
-                src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
-                alt="Card image cap">
-            <div class="card-body">
-                <a href="#" class="card-title">title</a>
-                <p class="card-text">address</p>
-                <p class="card-text category1">country</p>
-                <p class="card-text category2">category</p>
-                <p class="card-text ninkname">Nickname</p>
-                <p class="card-text comment">Comment</p>
-            </div>
-        </div>
     </div>
 
 </body>
