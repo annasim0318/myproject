@@ -54,5 +54,15 @@ def view():
     return jsonify({'result': 'success', 'articles': list(posts)})
 
 
+@app.route('/search', methods=['POST'])
+def search():
+    count3 = request.form['count3']
+    count4 = request.form['count4']
+    print(count3, count4)
+    posts = db.articles.find({'category1': count3, 'category2': count4}, {'_id': 0})
+    print(list(posts))
+    return jsonify({'result': 'success', 'articles': list(posts)})
+
+
 if __name__ == '__main__':
     app.run('127.0.0.1', port=5000, debug=True)
