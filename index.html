@@ -145,25 +145,83 @@
           </div>';
             $('#cards-box').append(temp_html);
         }
-        // function searching() {
-        //     $('#cards-box').html('');
+
+        function searching() {
+            let count3 = $("#count3 option:selected").text();
+            let count4 = $("#count4 option:selected").text();
+            // alert(count3 + count4);
+            console.log(count3)
+            console.log(count4)
+            $.ajax({
+                type: "POST",
+                url: "/search",
+                data: { "count3": count3, "count4": count4 },
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert('yay!');
+                    }
+                    for (let i = 0; i < cards.length; i++) {
+                        let url = cards[i]['url'];
+                        let comment = cards[i]['comment'];
+                        let title = cards[i]['title'];
+                        let image = cards[i]['image'];
+                        let nickname = cards[i]['nickname'];
+                        let desc = cards[i]['desc'];
+                        let category1 = cards[i]['category1'];
+                        let category2 = cards[i]['category2'];
+
+                        make_card(url, comment, title, image, nickname, desc, category1, category2);
+                    }
+
+                }
+            })
+        }
+            
+
+
+            // $('#count3').find(":selected").text();
+            // let count3 = $('#count3').val();
+        //     console.log(count3)
+        //     console.log(count4)
         //     $.ajax({
-        //         type: "GET",
-        //         url: "http://127.0.0.1:5000/",
-        //         data: {},
+        //         type: "POST",
+        //         url: "/search2",
+        //         processData: false,
+        //         contentType: false,
+        //         data: { "count3": count3, "count4": count4 },
         //         success: function (response) {
-        //             let cards = response["articles"];
-        //             console.log(cards);
+        //             let cards = response['articles'];
+        //             console.log(cards)
         //             for (let i = 0; i < cards.length; i++) {
+        //                 let url = cards[i]['url'];
+        //                 let comment = cards[i]['comment'];
+        //                 let title = cards[i]['title'];
+        //                 let image = cards[i]['image'];
+        //                 let nickname = cards[i]['nickname'];
+        //                 let desc = cards[i]['desc'];
         //                 let category1 = cards[i]['category1'];
         //                 let category2 = cards[i]['category2'];
-        //                 // let temp_html = '';
-        //                 $('#cards-box').append(temp_html);
+
+        //                 make_card(url, comment, title, image, nickname, desc, category1, category2);
         //             }
         //         }
         //     })
         // }
-
+        function make_card(url, comment, title, image, nickname, desc, category1, category2) {
+            let temp_html = '<div class="card">\
+            <img class="card-img-top" src="'+ image + '" alt="Card image cap">\
+            <div class="card-img-overlay" id="card-overlay">\
+                <p class="card-text-category1">'+ category1 + ' · ' + category2 + '</p>\
+              <a class="card-title" href="'+ url + '" target="_blank">' + title + '</a>\
+              <p class="card-text">'+ desc + '</p>\
+              <p class="card-text-nickname">'+ 'by ' + nickname + '</p>\
+              <p class="card-text-comment">'+ comment + '</p>\
+            </div>\
+          </div>';
+            $('#cards-box').append(temp_html);
+        }
     </script>
     <style type="text/css">
         * {
@@ -176,7 +234,7 @@
         }
 
         .wrap {
-            width: 1200px;
+            width: 800px;
             margin: 50px auto 0 auto;
             display: flex;
             flex-direction: column;
@@ -275,9 +333,9 @@
         }
 
         a.card-title:hover {
-            border: 1px solid #e7e7e7;
-            color: #353535;
-            background-color: #e7e7e7;
+            border: 1px solid #353535;
+            color: #e7e7e7;
+            background-color: #353535;
             text-decoration: none;
         }
 
@@ -446,19 +504,30 @@
         }
 
         .card-columns {
+
             margin: 40px;
-            flex-direction: column;
-            display: inline-block
+            /* flex-direction: column;
+            display: inline-block */
         }
 
+        .card-columns:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .card-columns:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
 
         .category2 {
             margin: 10pt auto;
         }
 
         .card {
-            /* float: left;
-            width: 16%; */
+
             position: relative;
             display: block;
             transition: .3s ease;
@@ -519,6 +588,7 @@
                     style="text-align:center">Search!</a>
             </div>
         </div>
+
         <div class="form-post">
             <div class="category" id="category-box">
                 <a target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps" class="website"
@@ -569,34 +639,34 @@
     <div>
         <div class=category2 id="category-box2">
             <div class="select-options">
-                <select id="count2" class="country">
+                <select id="count3" class="country">
                     <option selected class>Country</option>
-                    <option class="Republic of Korea">Republic of Korea</option>
-                    <option class="Belgium">Belgium</option>
-                    <option class="China">China</option>
-                    <option class="France">France</option>
-                    <option class="Germany">Germany</option>
-                    <option class="Iceland">Iceland</option>
-                    <option class="India">India</option>
-                    <option class="Ireland">Ireland</option>
-                    <option class="Netherlands">Netherlands</option>
-                    <option class="Portugal">Portugal</option>
-                    <option class="Spain">Spain</option>
-                    <option class="United Kingdom">United Kingdom</option>
-                    <option class="United States">United States</option>
+                    <option value="Republic of Korea">Republic of Korea</option>
+                    <option value="Belgium">Belgium</option>
+                    <option value="China">China</option>
+                    <option value="France">France</option>
+                    <option value="Germany">Germany</option>
+                    <option value="Iceland">Iceland</option>
+                    <option value="India">India</option>
+                    <option value="Ireland">Ireland</option>
+                    <option value="Netherlands">Netherlands</option>
+                    <option value="Portugal">Portugal</option>
+                    <option value="Spain">Spain</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="United States">United States</option>
                 </select>
-                <select id="count2" class="country">
+                <select id="count4" class="country">
                     <option selected class>category</option>
-                    <option class="Restaurants">Restaurants</option>
-                    <option class="Coffee">Coffee</option>
-                    <option class="Hotels">Hotels</option>
-                    <option class="Bars">Bars</option>
-                    <option class="Attractions">Attractions</option>
-                    <option class="Parks">Parks</option>
-                    <option class="Libraries">Libraries</option>
-                    <option class="Museum">Museum</option>
-                    <option class="Clothing stores">Clothing stores</option>
-                    <option class="Lifestyle stores">Lifestyle stores</option>
+                    <option value="Restaurants">Restaurants</option>
+                    <option value="Coffee">Coffee</option>
+                    <option value="Hotels">Hotels</option>
+                    <option value="Bars">Bars</option>
+                    <option value="Attractions">Attractions</option>
+                    <option value="Parks">Parks</option>
+                    <option value="Libraries">Libraries</option>
+                    <option value="Museum">Museum</option>
+                    <option value="Clothing stores">Clothing stores</option>
+                    <option value="Lifestyle stores">Lifestyle stores</option>
                 </select>
                 <button onclick="searching()" class="search2" data-hover=":D">:)</button>
             </div>
