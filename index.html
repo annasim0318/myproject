@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Webpage Title -->
+    <title>Share me your place!</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Inter|Nanum+Gothic|Nanum+Pen+Script|Noto+Sans+KR&display=swap"
+        href="https://fonts.googleapis.com/css?family=Inter|Nanum+Gothic|Nanum+Pen+Script|Noto+Sans+KR&display=swap"
+        rel="stylesheet">
+
+    <script type="text/javascript">
+        function openclose() {
+            if ($('#category-box2').css('display') == 'block') {
+                $('#category-box2').hide();
+                $('#search-box').text('Search!')
+            }
+            if ($('#category-box').css('display') == 'block') {
+                $('#category-box').hide();
+                $('#share-box').text('Share!')
+            } else {
+                $('#category-box').show();
+                $('#share-box').text('feel so good:D')
+            }
+        }
+        function openclose2() {
+            if ($('#category-box').css('display') == 'block') {
+                $('#category-box').hide();
+                $('#share-box').text('Share!')
+            }
+            if ($('#category-box2').css('display') == 'block') {
+                $('#category-box2').hide();
+                $('#search-box').text('Search!')
+            } else {
+                $('#category-box2').show();
+                $('#search-box').text('feel so happy:D')
+            }
+        }
+
+        function posting() {
+            let url = $('#posting-url').val();
+            let category1 = $('#count1').val();
+            let category2 = $('#count2').val();
+            let nickname = $('#nicknames').val();
+            let comment = $('#comments').val();
+            let author = '스파르타코딩클럽';
+
+            if (url == '') {
+                alert('Oops! url must be filled:)');
+                $('#posting-url').focus();
+                return;
+            } else if (category1 == '') {
+                alert('Oops! Please select country:)');
+                $('#count1').focus();
+                return;
+            } else if (category2 == '') {
+                alert('Oops! Please select category:)');
+                $('#count2').focus();
+                return;
+            } else if (nickname == '') {
+                alert('Oops! Your nickname must be filled:)');
+                $('#nicknames').focus();
+                return;
+            }
+
+
+            $.ajax({
+                type: "POST",
+                url: "/post",
+                data: { url_give: url, category1_give: category1, category2_give: category2, nickname_give: nickname, comment_give: comment },
+                success: function (response) {
+                    // if (response['result'] == 'success') {
+                    //     alert(response['msg']);
+                    //     $('#posting-url').val('');
+                    //     $('#count1').val('');
+                    //     $('#count2').val('');
+                    //     $('#nicknames').val('');
+                    //     window.location.reload();
+                    if (response['result'] == 'success') {
+                        alert('Thanks for sharing!');
+                        window.location.reload();
+                    } else {
+                        alert('Oops! sorry for the error!')
+                    }
+                }
+            })
+        }
+        $(document).ready(function () {
+            $('#cards-box').html('');
+            listing();
+        });
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/post",
+                data: {},
+                success: function (response) {
+                    let cards = response['articles'];
+                    console.log(cards);
+                    for (let i = 0; i < cards.length; i++) {
+                        let url = cards[i]['url'];
+                        let comment = cards[i]['comment'];
+                        let title = cards[i]['title'];
+                        let image = cards[i]['image'];
+                        let nickname = cards[i]['nickname'];
+                        let desc = cards[i]['desc'];
+                        let category1 = cards[i]['category1'];
+                        let category2 = cards[i]['category2'];
+
+                        make_card(url, comment, title, image, nickname, desc, category1, category2);
+                    }
+                }
+            })
+        }
+        function make_card(url, comment, title, image, nickname, desc, category1, category2) {
+            let temp_html = '<div class="card">\
+            <img class="card-img-top" src="'+ image + '" alt="Card image cap">\
+            <div class="card-img-overlay" id="card-overlay">\
+                <p class="card-text-category1">'+ category1 + ' · ' + category2 + '</p>\
+              <a class="card-title" href="'+ url + '" target="_blank">' + title + '</a>\
+              <p class="card-text">'+ desc + '</p>\
+              <p class="card-text-nickname">'+ 'by ' + nickname + '</p>\
+              <p class="card-text-comment">'+ comment + '</p>\
+            </div>\
+          </div>';
+            $('#cards-box').append(temp_html);
+        }
+
+        function searching() {
+            let count3 = $("#count3 option:selected").text();
+            let count4 = $("#count4 option:selected").text();
+            // alert(count3 + count4);
+            console.log(count3)
+            console.log(count4)
+            $.ajax({
+                type: "POST",
+                url: "/search",
+                data: { "count3": count3, "count4": count4 },
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert('yay!');
+                    }
+                    for (let i = 0; i < cards.length; i++) {
+                        let url = cards[i]['url'];
+                        let comment = cards[i]['comment'];
+                        let title = cards[i]['title'];
+                        let image = cards[i]['image'];
+                        let nickname = cards[i]['nickname'];
+                        let desc = cards[i]['desc'];
+                        let category1 = cards[i]['category1'];
+                        let category2 = cards[i]['category2'];
+
+                        make_card(url, comment, title, image, nickname, desc, category1, category2);
+                    }
+
+                }
+            })
+        }
+            
+
+
+            // $('#count3').find(":selected").text();
+            // let count3 = $('#count3').val();
+        //     console.log(count3)
+        //     console.log(count4)
+        //     $.ajax({
+        //         type: "POST",
+        //         url: "/search2",
+        //         processData: false,
+        //         contentType: false,
+        //         data: { "count3": count3, "count4": count4 },
+        //         success: function (response) {
+        //             let cards = response['articles'];
+        //             console.log(cards)
+        //             for (let i = 0; i < cards.length; i++) {
+        //                 let url = cards[i]['url'];
+        //                 let comment = cards[i]['comment'];
+        //                 let title = cards[i]['title'];
+        //                 let image = cards[i]['image'];
+        //                 let nickname = cards[i]['nickname'];
+        //                 let desc = cards[i]['desc'];
+        //                 let category1 = cards[i]['category1'];
+        //                 let category2 = cards[i]['category2'];
+
+        //                 make_card(url, comment, title, image, nickname, desc, category1, category2);
+        //             }
+        //         }
+        //     })
+        // }
+        function make_card(url, comment, title, image, nickname, desc, category1, category2) {
+            let temp_html = '<div class="card">\
+            <img class="card-img-top" src="'+ image + '" alt="Card image cap">\
+            <div class="card-img-overlay" id="card-overlay">\
+                <p class="card-text-category1">'+ category1 + ' · ' + category2 + '</p>\
+              <a class="card-title" href="'+ url + '" target="_blank">' + title + '</a>\
+              <p class="card-text">'+ desc + '</p>\
+              <p class="card-text-nickname">'+ 'by ' + nickname + '</p>\
+              <p class="card-text-comment">'+ comment + '</p>\
+            </div>\
+          </div>';
+            $('#cards-box').append(temp_html);
+        }
+    </script>
+    <style type="text/css">
+        * {
+            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #e7e7e7;
+        }
+
+        .wrap {
+            width: 800px;
+            margin: 50px auto 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .head {
+            color: #353535;
+            margin: 10px auto 0 auto;
+            font-size: 70px;
+            font-weight: 900;
+        }
+
+        .website {
+            border: 1px solid #e7e7e7;
+            width: 70px;
+            height: 20px;
+            border-radius: 1cm;
+            background-color: #e7e7e7;
+            color: #353535;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 0 auto 0 auto;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        a.website:hover {
+            color: #e7e7e7;
+            background-color: #a32515;
+            text-decoration: none;
+            font-size: 0;
+        }
+
+        .website:hover:after {
+            content: attr(data-hover);
+            font-size: 12px;
+        }
+
+        .share {
+            border: 1px solid #dbdbdb;
+            width: 100px;
+            height: 23px;
+            border-radius: 1cm;
+            padding: 0.03cm;
+            background-color: #dbdbdb;
+            color: #353535;
+            flex-direction: column;
+            display: inline-block;
+            align-items: center;
+            justify-content: center;
+            vertical-align: middle;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        a.share:hover {
+            color: #e7e7e7;
+            background-color: #a32515;
+            text-decoration: none;
+        }
+
+        .search {
+            border: 1px solid #dbdbdb;
+            width: 100px;
+            height: 23px;
+            border-radius: 1cm;
+            padding: 0.03cm;
+            background-color: #dbdbdb;
+            color: #353535;
+            flex-direction: column;
+            display: inline-block;
+            align-items: center;
+            justify-content: center;
+            vertical-align: middle;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        a.search:hover {
+            border: 1px solid #224a66;
+            color: #e7e7e7;
+            background-color: #224a66;
+            text-decoration: none;
+        }
+
+        .card-title {
+            color: #353535;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        a.card-title:hover {
+            border: 1px solid #353535;
+            color: #e7e7e7;
+            background-color: #353535;
+            text-decoration: none;
+        }
+
+
+
+        .card-text {
+            color: #353535;
+            font-size: 10px;
+            font-weight: 200;
+            margin: -2px auto 5px auto;
+        }
+
+        .card-text-category1 {
+            color: #353535;
+            font-size: 12px;
+            font-weight: 200;
+            margin: -2px auto 2px auto;
+        }
+
+        .card-text-nickname {
+            color: #8b8b8b;
+            font-size: 10px;
+            font-weight: 200;
+            margin: -1px auto -2px auto;
+        }
+
+        .card-text-comment {
+            color: #353535;
+            font-size: 11px;
+            font-weight: 200;
+            margin: 3px auto -2px auto;
+        }
+
+        .linkurl {
+            margin: 30px auto 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        input[type=text] {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #6d6d6d;
+        }
+
+        .category {
+            width: 280px;
+            height: 280px;
+            margin: 30px auto 0 auto;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            margin: 2rem auto;
+            border-color: #e0e0e0;
+            background-color: #e0e0e0;
+            border-radius: 280px;
+            border-style: solid;
+            display: block;
+
+        }
+
+        .select-options {
+            display: inline-block;
+            vertical-align: middle;
+
+
+        }
+
+        .country {
+            border: 0.5px solid #525252;
+            width: 80px;
+            height: 20px;
+            border-radius: 5cm;
+            font-size: 12px;
+            background-color: #525252;
+            color: #e7e7e7;
+        }
+
+        .search2 {
+            border: 1px solid #dbb73d;
+            width: 26px;
+            height: 26px;
+            border-radius: 1cm;
+            background-color: #dbb73d;
+            color: #e7e7e7;
+            flex-direction: column;
+            display: inline-block;
+            align-items: center;
+            justify-content: center;
+            vertical-align: middle;
+            font-size: 16px;
+            font-weight: 900;
+        }
+
+        button.search2:hover {
+            border: 1px solid #dbb73d;
+            color: #e7e7e7;
+            background-color: #dbb73d;
+            text-decoration: none;
+            font-size: 0;
+        }
+
+        .search2:hover:after {
+            content: attr(data-hover);
+            font-size: 16px;
+            font-weight: 900;
+        }
+
+        .share2 {
+            border: 1px solid #e7e7e7;
+            width: 40px;
+            height: 23px;
+            border-radius: 1cm;
+            background-color: #e7e7e7;
+            color: #353535;
+            flex-direction: column;
+            display: inline-block;
+            align-items: center;
+            justify-content: center;
+            vertical-align: middle;
+        }
+
+        .nickname {
+            width: 100px;
+            height: 20px;
+            margin: 10px auto 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .comment {
+            width: 150px;
+            height: 20px;
+            margin: 13px auto 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+
+        }
+
+        input[type=text] {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #6d6d6d;
+        }
+
+        .url {
+            width: 200px;
+            height: 20px;
+            margin: 30px auto 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .card-columns {
+
+            margin: 40px;
+            /* flex-direction: column;
+            display: inline-block */
+        }
+
+        .card-columns:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .card-columns:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .category2 {
+            margin: 10pt auto;
+        }
+
+        .card {
+
+            position: relative;
+            display: block;
+            transition: .3s ease;
+            backface-visibility: hidden;
+            background: transparent;
+            border-color: transparent;
+            border-radius: 0.5cm;
+        }
+
+        .card-img-overlay {
+            border-radius: 0.5cm;
+        }
+
+        .card-img-top {
+            border-radius: 0.5cm;
+        }
+
+        .card:hover .card-img-top {
+            border-radius: 0.5cm;
+            transition: .3s ease;
+            backface-visibility: hidden;
+            color: #000000;
+            opacity: 0.1;
+        }
+
+        .card-img-overlay {
+            display: none;
+        }
+
+        .card:hover .card-img-overlay {
+            display: block;
+        }
+
+        #category-box {
+            display: none;
+        }
+
+        #category-box2 {
+            display: none;
+        }
+    </style>
+    <script>
+
+    </script>
+</head>
+
+<body>
+
+    <div class="wrap">
+        <div class="head">
+            <span h1>Share me a good place</h1>
+        </div>
+        <div class="linkurl">
+            <div class="select-options">
+                <a id="share-box" class="share" onclick="openclose()" href="#" role="button"
+                    style="text-align:center">Share!</a>
+                <a id="search-box" class="search" onclick="openclose2()" href="#" role="button"
+                    style="text-align:center">Search!</a>
+            </div>
+        </div>
+
+        <div class="form-post">
+            <div class="category" id="category-box">
+                <a target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps" class="website"
+                    data-hover="Google!">Click
+                    me!</a>
+                <input type="text" size="50" id="posting-url" class="url" placeholder="Paste your url">
+                <p>
+                    <div class="select-options">
+                        <select id="count1" class="country">
+                            <option selected class>Country</option>
+                            <option class="Republic of Korea">Republic of Korea</option>
+                            <option class="Belgium">Belgium</option>
+                            <option class="China">China</option>
+                            <option class="France">France</option>
+                            <option class="Germany">Germany</option>
+                            <option class="Iceland">Iceland</option>
+                            <option class="India">India</option>
+                            <option class="Ireland">Ireland</option>
+                            <option class="Netherlands">Netherlands</option>
+                            <option class="Portugal">Portugal</option>
+                            <option class="Spain">Spain</option>
+                            <option class="United Kingdom">United Kingdom</option>
+                            <option class="United States">United States</option>
+                        </select>
+                        <select id="count2" class="country">
+                            <option selected class>category</option>
+                            <option class="Restaurants">Restaurants</option>
+                            <option class="Coffee">Coffee</option>
+                            <option class="Hotels">Hotels</option>
+                            <option class="Bars">Bars</option>
+                            <option class="Attractions">Attractions</option>
+                            <option class="Parks">Parks</option>
+                            <option class="Libraries">Libraries</option>
+                            <option class="Museum">Museum</option>
+                            <option class="Clothing stores">Clothing stores</option>
+                            <option class="Lifestyle stores">Lifestyle stores</option>
+                        </select>
+                        <div class="form-group">
+                            <input type="text" id="nicknames" class="nickname" size="50" placeholder="@Nickname">
+
+                            <input type="text" id="comments" class="comment" size="30" placeholder="Comment">
+                        </div>
+                        <button onclick="posting()" class="search2" data-hover=":D">:)</button>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class=category2 id="category-box2">
+            <div class="select-options">
+                <select id="count3" class="country">
+                    <option selected class>Country</option>
+                    <option value="Republic of Korea">Republic of Korea</option>
+                    <option value="Belgium">Belgium</option>
+                    <option value="China">China</option>
+                    <option value="France">France</option>
+                    <option value="Germany">Germany</option>
+                    <option value="Iceland">Iceland</option>
+                    <option value="India">India</option>
+                    <option value="Ireland">Ireland</option>
+                    <option value="Netherlands">Netherlands</option>
+                    <option value="Portugal">Portugal</option>
+                    <option value="Spain">Spain</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="United States">United States</option>
+                </select>
+                <select id="count4" class="country">
+                    <option selected class>category</option>
+                    <option value="Restaurants">Restaurants</option>
+                    <option value="Coffee">Coffee</option>
+                    <option value="Hotels">Hotels</option>
+                    <option value="Bars">Bars</option>
+                    <option value="Attractions">Attractions</option>
+                    <option value="Parks">Parks</option>
+                    <option value="Libraries">Libraries</option>
+                    <option value="Museum">Museum</option>
+                    <option value="Clothing stores">Clothing stores</option>
+                    <option value="Lifestyle stores">Lifestyle stores</option>
+                </select>
+                <button onclick="searching()" class="search2" data-hover=":D">:)</button>
+            </div>
+        </div>
+    </div>
+    <div class="card-columns" id="cards-box">
+        <div class="column">
+            <!-- <div class="column-6-left">
+            <img class="card-img"
+                src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
+                alt="Card image cap">
+            <div class="cardin"> -->
+            <!-- <a href="#" class="card-title">title</a>
+                <p class="card-text">address</p>
+                <p class="card-text category1">country</p>
+                <p class="card-text category2">category</p>
+                <p class="card-text ninkname">Nickname</p>
+                <p class="card-text comment">Comment</p> -->
+        </div>
+    </div>
+    </div>
+
+    <!-- <div class="column-6-left">
+            <img class="card-img"
+                src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
+                alt="Card image cap"> -->
+    <!-- <div class="cardin">
+                <a href="#" class="card-title">title</a>
+                <p class="card-text">address</p>
+                <p class="card-text category1">country</p>
+                <p class="card-text category2">category</p>
+                <p class="card-text ninkname">Nickname</p>
+                <p class="card-text comment">Comment</p>
+            </div> -->
+    </div>
+
+    </div>
+
+</body>
+
+</html>
